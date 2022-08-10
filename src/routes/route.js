@@ -4,14 +4,14 @@ const underscore = require('underscore')
 
 const router = express.Router();
 
-router.get('/test-me', function (req, res) {
-    myHelper.printDate()
-    myHelper.getCurrentMonth()
-    myHelper.getCohortData()
-    let firstElement = underscore.first(['Sabiha','Akash','Pritesh'])
-    console.log('The first element received from underscope function is '+firstElement)
-    res.send('My first ever api!')
-});
+// router.get('/test-me', function (req, res) {
+//     myHelper.printDate()
+//     myHelper.getCurrentMonth()
+//     myHelper.getCohortData()
+//     let firstElement = underscore.first(['Sabiha','Akash','Pritesh'])
+//     console.log('The first element received from underscope function is '+firstElement)
+//     res.send('My first ever api!')
+// });
 
 router.get("/movies/:indexNumber", function(req, res){
     const movies = ["Rang de basanti", "The shining", "Lord of the rings", "Batman begins"]
@@ -102,6 +102,75 @@ router.get("/films/:filmId", function(req, res){
        //if there is no match give an error response
        res.send("The film id doesn't match any movie")
 })
+router.get('/missingg',function(req,res){
+  let arr = [1,2,3,4,5,6,7,8,9,10,11,13]
+  function missingNumber(arr){
+    for (i=0;i<arr.length;i++){
+      if(i+1 != arr[i]){
+        return arr[i]-1
+      }else{
 
+      }
+
+    }
+  }
+  let result =missingNumber(arr)
+  res.send('the missing number is ' +result.toString())
+  
+}) 
+
+router.get('/test-me',function(req,res){
+    res.send('are haan bahut badiya ho gyi !')
+})
+  
+router.get('/test-me-2',function(req,res){
+    res.send('hello function Up !')
+})
+router.get('/test-me-3',function(req,res){
+    res.send('please stop creating more api!')
+})
+
+router.get('/test-me-4',function(req,res){
+    res.send({a: 6, b: 45})
+});   
+
+router.post('/test-post',function(req,res){
+    res.send([23,45,6])
+});   
+
+router.post('/test-post-2',function(req,res){
+
+    console.log( req.body )
+    res.send({msg:"hii",status: true})
+});   
+// take input in post request and add it to an array and return new array
+    
+router.post('test-post-4',function(req,res){
+    let arr = [12,"hello dev"]
+    let ele =req.body.element
+    arr.push(ele)
+    res.send({msg:arr, staus:true})
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 module.exports = router;
-// adding this comment for no reason
+// adding this comment for no reason 
+     
