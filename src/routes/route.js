@@ -50,6 +50,8 @@ router.post("/createBook", BookController.createBook  )
 
 router.get("/basicRoute", commonMW.mid1, commonMW.mid2, commonMW.mid3, commonMW.mid4, UserController.basicCode)
 
+router.get("/assignmentcode",commonMW.assignment1  ,UserController.assignment)
+
 
 
 // router.get("/basicRoute2", commonMW.mid1, UserController.basicCode2)

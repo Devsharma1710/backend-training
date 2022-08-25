@@ -12,9 +12,14 @@ const basicCode= async function(req, res) {
     res.send({ msg: "This is coming from controller (handler)"})
     }
 
+ 
 
+     
 
-
+const assignment = async function (req,res){
+    
+    res.send("this is assignment handler")
+}
 
 
 
@@ -44,3 +49,4 @@ const getUsersData= async function (req, res) {
 module.exports.createUser= createUser
 module.exports.getUsersData= getUsersData
 module.exports.basicCode= basicCode
+module.exports.assignment= assignment
