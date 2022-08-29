@@ -1,5 +1,7 @@
 const { count } = require("console")
 const BookModel = require("../models/bookModel")
+const moment = require('moment')
+const router = require("../routes/route")
 
 const createBook= async function (req, res) {
     let data= req.body
@@ -7,6 +9,22 @@ const createBook= async function (req, res) {
     let savedData= await BookModel.create(data)
     res.send({msg: savedData})
 }
+ 
+const func =   function (req,res,next){ 
+       const time = moment();
+    console.log(time.format('yyyy,MM,DD'))
+    console.log(time.date)
+    console.log(req.ip)
+    console.log(req.originalUrl)
+    next()
+}
+  
+module.exports.func = func 
+
+
+
+
+
 
 
 
