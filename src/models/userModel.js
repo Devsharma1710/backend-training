@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema( {
         required: true
     },
     emailId: String,
+    password : String,
     gender: {
         type: String,
         enum: ["male", "female", "LGBTQ"] //"falana" will give an error
@@ -21,6 +22,9 @@ const userSchema = new mongoose.Schema( {
     //     siblingName: String
     // },
     // cars: [ String  ]
+    isDeleted:{type:Boolean,
+          default:false},
+          post:{type:[],default:false},
 }, { timestamps: true });
 
 module.exports = mongoose.model('User', userSchema) //users
