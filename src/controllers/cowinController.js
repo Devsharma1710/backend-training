@@ -38,6 +38,10 @@ let getDistricts = async function (req, res) {
     }
 }
 
+
+
+
+
 let getByPin = async function (req, res) {
     try {
         let pin = req.query.pincode
