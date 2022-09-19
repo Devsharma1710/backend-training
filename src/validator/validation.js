@@ -18,6 +18,7 @@ const mobile=function(mobile){
   return false
 }
 
+
 // for email id
 const email=function(email){
     if(/^\w+([\.-]?\w+)@\w+([\.-]?\w+)(\.\w{2,3})+$/.test(email) ) return true
