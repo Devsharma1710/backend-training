@@ -13,12 +13,12 @@ app.use(express.json());
 mongoose.connect("mongodb+srv://Group28_database:4tZ5x2HmbYcIlEwk@cluster0.p5ih0di.mongodb.net/Group28Database?retryWrites=true&w=majority", {
     useNewUrlParser: true
 })
-    .then(() => console.log("MongoDb is connected on 27017"))
+    .then(() => console.log("MongoDb is connected "))
     .catch(err => console.log(err))
 
 
 
-app.use('/', route);
+app.use('/', route); 
 
 
 

@@ -125,7 +125,7 @@ const updateReview = async function (req, res) {
 
         //================================ if book not found ======================================
         let book = await booksModel.findOne({ _id: bookId }).lean()
-        if (!book) {
+        if (!book) {   
             return res.status(404).send({ status: false, message: "Sorry! Book Not Found!" })
         }
         if (book.isDeleted == true) {
@@ -180,7 +180,8 @@ const updateReview = async function (req, res) {
 
         //============================= if authorised =============================================
         if (bookId == findreview.bookId) {
-            let updateReview = await reviewModel.findOneAndUpdate({ _id: reviewid,isDeleted:false }, { review: reviews, rating: rating, reviewedBy: reviewedBys, reviewedAt: new Date() }, { new: true })
+            let updateReview = await reviewModel.findOneAndUpdate({ _id: reviewid,isDeleted:false }, 
+                { review: reviews, rating: rating, reviewedBy: reviewedBys, reviewedAt: new Date() }, { new: true })
             book["reviewsData"] = updateReview
             res.status(200).send({ status: true, message: "BookReview is updated", data: book })
         }

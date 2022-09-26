@@ -111,7 +111,7 @@ const createBooks = async function (req, res) {
         };
 
         if (!subcategory.match(stringRegex)) {
-            return res.status(400).send({ status: false, message: "category cannot contain numbers" })
+            return res.status(400).send({ status: false, message: "subcategory cannot contain numbers" })
         };
 
         if (subcategory.match(stringRegex)) {
