@@ -19,7 +19,7 @@ const shortUrl = async (req, res) => {
       let url = await urlModel.findOne({ longUrl });
       if (url) {
         console.log("Already exists...");
-        return res.status(400).send({ data: url });
+        return res.status(400).send({ status : false, msg : "Url already exists" });
       } else {
         // create url code
         let urlCode = shortId.generate();
@@ -44,22 +44,15 @@ const shortUrl = async (req, res) => {
 // get url
 const getUrl = async (req, res) => {
   try {
-    let urlCode = req.params.urlCode;
+    let code = req.params.urlCode;
 
-    if (!urlCode)
-      return res
-        .status(400)
-        .send({ status: false, message: "Pass url code in url" });
+    if (!code) return res.status(400).send({ status: false, message: "Pass url code in url" });
 
-    let findUrlCode = await urlModel.findOne({ urlCode });
-    // console.log( ` url ${findUrlCode} `);
-    if (!findUrlCode)
-      return res
-        .status(400)
-        .send({ status: false, message: "Url code not found" });
-    let redirect = findUrlCode.longUrl
-    res.redirect('/')
-    return res.status(302).send({ status: true, message: findUrlCode});
+    let findUrlCode = await urlModel.findOne({ urlCode : code });
+    if (!findUrlCode) return res.status(400).send({ status: false, message: "Url code not found" });
+    let redirect = findUrlCode
+
+    return res.status(302).redirect(redirect.longUrl)
   } catch (err) {
     return res.status(500).send({ status: true, error: err.message });
   }
