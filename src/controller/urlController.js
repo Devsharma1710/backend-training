@@ -1,13 +1,10 @@
-const express = require("express");
+
 const urlModel = require("../models/urlModel");
 const validUrl = require("valid-url");
 const shortId = require("shortid");
 const baseUrl = "http:localhost:3000"; //baseUrl = shorturl + urlcode
 
 const redis = require("redis");
-
-
-
 
 
 const { promisify } = require("util");
@@ -32,22 +29,20 @@ const SET_ASYNC = promisify(redisClient.SET).bind(redisClient);
 const GET_ASYNC = promisify(redisClient.GET).bind(redisClient);
 
 const getshorturl = async function (req, res) {
-  let cahcedshorturl = await GET_ASYNC(`${req.params._id}`)
+  let a = req.params.objectid
+  let cahcedshorturl = await GET_ASYNC(`${a}`)
   if(cahcedshorturl) {
     res.send(cahcedshorturl)
   } 
   else 
 
   {
-    let profile = await urlModel.findById(req.params._id);
-    await SET_ASYNC(`${req.params._id}`, JSON.stringify(profile))
+    let profile = await urlModel.findById({_id:a});
+    await SET_ASYNC(`${a}`, JSON.stringify(profile))
     res.send({ data: profile });
-  }
-
+  } 
+  
 };
-
-
-
 
 
 
@@ -64,10 +59,14 @@ const shortUrl = async (req, res) => {
   // check long url
   if (validUrl.isUri(longUrl)) {
     try {
+      const cachedData = await GET_ASYNC(`${longUrl}`)
+      if(cachedData){
+        return res.status(400).send({ status : false, msg : "Urlfrom cache" ,data:JSON.parse(cachedData)});
+      }
       let url = await urlModel.findOne({ longUrl });
       if (url) {
-        console.log("Already exists...");
-        return res.status(400).send({ status : false, msg : "Url already exists" });
+       await SET_ASYNC(`${longUrl}`,JSON.stringify(url))
+        return res.status(400).send({ status : false, msg : "Url already exists" ,data:url});
       } else {
         // create url code
         let urlCode = shortId.generate();
@@ -78,6 +77,7 @@ const shortUrl = async (req, res) => {
           shortUrl: shortUrl,
           urlCode: urlCode,
         });
+        await SET_ASYNC(`${longUrl}`,JSON.stringify(allUrl))
         return res.status(201).send({ data: allUrl });
       }
     } catch (error) {
