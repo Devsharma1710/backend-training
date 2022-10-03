@@ -4,6 +4,54 @@ const validUrl = require("valid-url");
 const shortId = require("shortid");
 const baseUrl = "http:localhost:3000"; //baseUrl = shorturl + urlcode
 
+const redis = require("redis");
+
+
+
+
+
+const { promisify } = require("util");
+
+//Connect to redis
+const redisClient = redis.createClient(
+  18003,
+  "redis-18003.c301.ap-south-1-1.ec2.cloud.redislabs.com",
+  { no_ready_check: true }
+);
+redisClient.auth("kAoDV1mbdU4e97CP04rmcz4P04U6SA1p", function (err) {
+  if (err) throw err;
+});
+
+redisClient.on("connect", async function () {
+  console.log("Connected to Redis..");
+});
+
+
+
+const SET_ASYNC = promisify(redisClient.SET).bind(redisClient);
+const GET_ASYNC = promisify(redisClient.GET).bind(redisClient);
+
+const getshorturl = async function (req, res) {
+  let cahcedshorturl = await GET_ASYNC(`${req.params._id}`)
+  if(cahcedshorturl) {
+    res.send(cahcedshorturl)
+  } 
+  else 
+
+  {
+    let profile = await urlModel.findById(req.params._id);
+    await SET_ASYNC(`${req.params._id}`, JSON.stringify(profile))
+    res.send({ data: profile });
+  }
+
+};
+
+
+
+
+
+
+
 // post url
 const shortUrl = async (req, res) => {
   const { longUrl } = req.body;
@@ -58,4 +106,4 @@ const getUrl = async (req, res) => {
   }
 };
 
-module.exports = { shortUrl, getUrl };
+module.exports = { shortUrl, getUrl,getshorturl };
