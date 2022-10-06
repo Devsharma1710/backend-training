@@ -23,29 +23,8 @@ redisClient.on("connect", async function () {
   console.log("Connected to Redis..");
 });
 
-
-
 const SET_ASYNC = promisify(redisClient.SET).bind(redisClient);
 const GET_ASYNC = promisify(redisClient.GET).bind(redisClient);
-
-const getshorturl = async function (req, res) {
-  let a = req.params.objectid
-  let cahcedshorturl = await GET_ASYNC(`${a}`)
-  if(cahcedshorturl) {
-    res.send(cahcedshorturl)
-  } 
-  else 
-
-  {
-    let profile = await urlModel.findById({_id:a});
-    await SET_ASYNC(`${a}`, JSON.stringify(profile))
-    res.send({ data: profile });
-  } 
-  
-};
-
-
-
 
 // post url
 const shortUrl = async (req, res) => {
@@ -90,20 +69,26 @@ const shortUrl = async (req, res) => {
 };
 
 // get url
-const getUrl = async (req, res) => {
+const getUrl = async function (req, res) {
   try {
-    let code = req.params.urlCode;
-
-    if (!code) return res.status(400).send({ status: false, message: "Pass url code in url" });
-
-    let findUrlCode = await urlModel.findOne({ urlCode : code });
-    if (!findUrlCode) return res.status(400).send({ status: false, message: "Url code not found" });
-    let redirect = findUrlCode
-
-    return res.status(302).redirect(redirect.longUrl)
+      const urlCode = req.params.urlCode
+      if (!shortId.isValid(req.params.urlCode.trim())) {
+          return res.status(400).send({ status: false, message: "Please provide valid urlCode" })
+      }
+      let cachedURLCode = await GET_ASYNC(`${req.params.urlCode}`)
+      if (cachedURLCode) {
+          return res.status(200).redirect(JSON.parse (cachedURLCode).longUrl)
+      } else {
+          const cachedData = await urlModel.findOne({ urlCode: urlCode })
+          if (!cachedData) {
+              return res.status(404).send({ status: false, message: "Long URL Not Found" })
+          }
+          await SET_ASYNC(`${req.params.urlCode}`, JSON.stringify(cachedData), "EX",10)
+          return res.status(302).redirect(cachedData.longUrl)
+      }
   } catch (err) {
-    return res.status(500).send({ status: true, error: err.message });
-  }
-};
+      return res.status(500).send({ status: false, message: err.message })   
+    }
+}
 
-module.exports = { shortUrl, getUrl,getshorturl };
+module.exports = { shortUrl, getUrl };
