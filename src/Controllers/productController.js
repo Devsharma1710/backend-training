@@ -191,10 +191,9 @@ const productCreate = async function (req, res) {
         }
       }
 
-      //using array.isArray function to check the value is array or not.
-      if (Array.isArray(sizesArray)) {
+    
         newProductData["availableSizes"] = [...new Set(sizesArray)];
-      }
+      
     }
 
     //_______________________________________________Creating Product______________________________________________________

@@ -266,7 +266,7 @@ const updateuser = async function (req, res) {
             obj.phone = phone
         }
 
-        //==========================================Updating Address==========================================
+        //==========================================Upating Address==========================================
 
         const addresses = JSON.parse(address);
 
@@ -293,7 +293,6 @@ const updateuser = async function (req, res) {
               .status(400)
               .send({ status: false, message: "Billing Address is required" });
           }
-
           obj.address = addresses;
 
   //====================================Updating Profile=====================================================================================================================================================================
