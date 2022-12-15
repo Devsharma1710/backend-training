@@ -13,9 +13,10 @@ const authentication = async function (req, res, next) {
             if (err) {
                 return res.status(400).send({ status: false, message: "Token is not correct!" })
             }
-            req.decode = decode
-
-            next()
+            
+            req.decode = decode        
+                    
+            next()    
         })
     } catch (error) {
         res.status(500).send({ status: false, message: error.message })

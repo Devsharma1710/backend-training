@@ -1,6 +1,6 @@
 //const { model } = require("mongoose")
 const adminModel = require("../model/adminModel")
-const studentModel = require("../model/studentModel")
+// const studentModel = require("../model/studentModel")
 const jwt = require('jsonwebtoken')
 const  {
      isValidEmail,
