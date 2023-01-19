@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Registration</title>
+
+    <style>
+        body {
+            padding: 10px 50px;
+        }
+
+        .formdesign {
+            font-size: 20px;
+        }
+
+        .formdesign input {
+            width: 200px;
+            padding: 12px 20px;
+            border: 2px solid blue;
+            margin: 14px;
+            border-radius: 4px;
+            font-size: 15px;
+        }
+
+        .formerror {
+            color: red;
+            font-weight: bold;
+        }
+        .but{
+            color: rgb(146, 54, 54);
+            border-radius: 9px;
+            border: 100px;
+            height: 50px;
+            font-size: 25px;
+            margin : 22px 20px;
+            
+        }
+    </style>
+</head>
+
+<body>
+    <h1> Registration Form</h1>
+    <form action="/myaction.php" name="myform" onsubmit="return validateform()" method="post">
+        <div class="formdesign" id="name">
+            FirstName: <input type="text" name="fname" required><span class="formerror"> </span>
+        </div>
+        <div class="formdesign" id="LastName">
+            LastName: <input type="text" name="lname" required><span class="formerror"> </span>
+        </div>
+        <div class="formdesign" id="Phone">
+            Phone: <input type="text" name="fphone" required><span class="formerror"> </span>
+        </div>
+        <div class="formdesign" id="email">
+            Email: <input type="email" name="femail" required><span class="formerror"> </span>
+        </div>
+        <div class="formdesign" id="password">
+            Password: <input type="password" name="pass" required><span class="formerror"> </span>
+            
+        </div>
+
+        <input class="but" type="submit" value="Submit">
+    </form>
+
+</body>
+
+<script>
+
+    function seterror(id,error){
+      
+     element = document.getElementById(id);
+     element.getElementsByClassName('formerror')[0].innerHTML = error;
+    }
+
+    function validateform(){
+        var returnval =true
+        //perform validations set the value return val to false
+
+      var name = document.forms['myform']["fname"].value;
+      if(name.length==0) {
+        seterror("name","name field mandatory")
+        returnval = false
+      }
+    
+      var email = document.forms['myform']["femail"].value;
+      if(email.length>15) {
+        seterror("email","length of email is too long")
+        returnval = false
+      }
+
+      var Phone = document.forms['myform']["fphone"].value;
+     
+      if(phone.length!=10) {
+        seterror("phone","Phone number should be in valid format")
+        returnval = false
+      }
+
+      return returnval;
+    }
+
+</script>
+
+</html>
